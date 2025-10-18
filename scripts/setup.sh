@@ -76,18 +76,28 @@ chmod 750 "$COTURN_DIR"
 chmod 750 "$LOGS_DIR"
 echo -e "${GREEN}✅ Directories ready${NC}"
 
+# Copy example config file
+echo -e "${YELLOW}📋 Copying example config file...${NC}"
+if [ -f "config/coturn.conf" ]; then
+    cp config/coturn.conf "$CONFIG_FILE"
+    chown coturn:coturn "$CONFIG_FILE"
+    chmod 640 "$CONFIG_FILE"
+    echo -e "${GREEN}✅ Example coturn.conf copied to $CONFIG_FILE${NC}"
+else
+    echo -e "${YELLOW}⚠️  Example config not found, will need to create manually${NC}"
+fi
+
 # Check config file
 if [ ! -f "$CONFIG_FILE" ]; then
     echo -e "${RED}❌ Missing coturn.conf file at $CONFIG_FILE${NC}"
     echo ""
-    echo "Please create a coturn.conf file based on the example:"
-    echo "1. Copy the example: cp config/coturn.conf ."
-    echo "2. Edit with your values: nano coturn.conf"
-    echo "3. Set external-ip to your public IP address"
-    echo "4. Change static-auth-secret to a secure value"
-    echo "5. Run this script again"
+    echo "Please create a coturn.conf file:"
+    echo "1. Edit the copied config: nano $CONFIG_FILE"
+    echo "2. Set external-ip to your public IP address"
+    echo "3. Change static-auth-secret to a secure value"
+    echo "4. Run this script again"
     echo ""
-    echo -e "${YELLOW}Run this script again after creating the coturn.conf file.${NC}"
+    echo -e "${YELLOW}Run this script again after configuring the coturn.conf file.${NC}"
     exit 0
 fi
 
