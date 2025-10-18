@@ -78,67 +78,17 @@ echo -e "${GREEN}✅ Directories ready${NC}"
 
 # Check config file
 if [ ! -f "$CONFIG_FILE" ]; then
-    echo -e "${YELLOW}📝 Creating example coturn.conf...${NC}"
-    cat > "$CONFIG_FILE" <<EOF
-# Coturn TURN Server Configuration
-# Edit this file with your actual values
-
-# Listening ports
-listening-port=3478
-tls-listening-port=5349
-
-# External IP (REQUIRED - replace with your public IP)
-# external-ip=YOUR_PUBLIC_IP/PRIVATE_IP
-external-ip=auto-detect
-
-# Authentication
-# Use static auth secret for TURN credentials
-static-auth-secret=your-secret-key-here-change-in-production
-
-# Realm
-realm=crewdev-turn-server
-
-# Logging
-log-file=$LOGS_DIR/coturn.log
-verbose
-
-# Security
-no-multicast-peers
-no-cli
-no-tlsv1
-no-tlsv1_1
-
-# Performance
-total-quota=100
-bps-capacity=0
-stale-nonce=600
-
-# Database (optional - for user management)
-# userdb=/etc/coturn/turndb
-
-# Certificates (for TURNS - optional)
-# cert=/etc/coturn/cert.pem
-# pkey=/etc/coturn/private.pem
-
-# Deny access to private IP ranges
-denied-peer-ip=0.0.0.0-0.255.255.255
-denied-peer-ip=10.0.0.0-10.255.255.255
-denied-peer-ip=100.64.0.0-100.127.255.255
-denied-peer-ip=127.0.0.0-127.255.255.255
-denied-peer-ip=169.254.0.0-169.254.255.255
-denied-peer-ip=172.16.0.0-172.31.255.255
-denied-peer-ip=192.0.0.0-192.0.0.255
-denied-peer-ip=192.0.2.0-192.0.2.255
-denied-peer-ip=192.88.99.0-192.88.99.255
-denied-peer-ip=192.168.0.0-192.168.255.255
-denied-peer-ip=198.18.0.0-198.19.255.255
-denied-peer-ip=198.51.100.0-198.51.100.255
-denied-peer-ip=203.0.113.0-203.0.113.255
-denied-peer-ip=240.0.0.0-255.255.255.255
-EOF
-    chown coturn:coturn "$CONFIG_FILE"
-    chmod 640 "$CONFIG_FILE"
-    echo -e "${GREEN}✅ Example coturn.conf created at $CONFIG_FILE${NC}"
+    echo -e "${RED}❌ Missing coturn.conf file at $CONFIG_FILE${NC}"
+    echo ""
+    echo "Please create a coturn.conf file based on the example:"
+    echo "1. Copy the example: cp config/coturn.conf ."
+    echo "2. Edit with your values: nano coturn.conf"
+    echo "3. Set external-ip to your public IP address"
+    echo "4. Change static-auth-secret to a secure value"
+    echo "5. Run this script again"
+    echo ""
+    echo -e "${YELLOW}Run this script again after creating the coturn.conf file.${NC}"
+    exit 0
 fi
 
 # Test configuration
